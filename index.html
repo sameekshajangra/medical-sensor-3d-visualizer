@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional 3D PCB Layout</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Left Operations Panel -->
+    <div id="ui-container" class="glass-panel">
+        <div class="ui-header">
+            <h1>PCB CAD VIEWER</h1>
+            <p class="mono-text">DESIGN: REMOTE HEALTH MONITORING SYSTEM</p>
+            <p class="mono-text">REV: V1.0 | <span class="badge">PRO_RENDER</span></p>
+        </div>
+        
+        <div class="divider"></div>
+
+        <div class="section">
+            <h3>CAMERA ANGLES</h3>
+            <div class="controls">
+                <button id="btn-top">TOP Y</button>
+                <button id="btn-bottom">BTM -Y</button>
+                <button id="btn-left">LFT X</button>
+                <button id="btn-right">RGT -X</button>
+                <button id="btn-iso" class="active">ISO 3D</button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <h3>ROUTING VISIBILITY</h3>
+            <div class="toggles">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-power" checked>
+                    <span class="slider"></span>
+                    <span class="label-text">POWER (3.3V/GND)</span>
+                </label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-i2c" checked>
+                    <span class="slider"></span>
+                    <span class="label-text">I2C BUS (SDA/SCL)</span>
+                </label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-analog" checked>
+                    <span class="slider"></span>
+                    <span class="label-text">ANALOG / INT / IO</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="legend">
+            <h3>NET CLASS LEGEND</h3>
+            <ul>
+                <li><span class="color-box" style="background:#ff3b30; box-shadow: 0 0 5px #ff3b30;"></span> [VCC] 3.3V Power Line</li>
+                <li><span class="color-box" style="background:#555555; box-shadow: 0 0 5px #555555;"></span> [GND] Ground Plane / Return</li>
+                <li><span class="color-box" style="background:#0a84ff; box-shadow: 0 0 5px #0a84ff;"></span> [I2C] Digital Data I2C</li>
+                <li><span class="color-box" style="background:#30d158; box-shadow: 0 0 5px #30d158;"></span> [ANA] Analog Signals/Interrupts</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Right Stats Panel -->
+    <div id="ui-stats" class="glass-panel">
+        <h3>BOARD STATISTICS</h3>
+        <table class="stats-table">
+            <tr>
+                <td>COMPONENTS</td>
+                <td class="stat-val">5</td>
+            </tr>
+            <tr>
+                <td>BOARD SIZE</td>
+                <td class="stat-val">80x100 mm</td>
+            </tr>
+            <tr>
+                <td>TOTAL PINS</td>
+                <td class="stat-val">32</td>
+            </tr>
+            <tr>
+                <td>ROUTED TRACES</td>
+                <td class="stat-val">100%</td>
+            </tr>
+        </table>
+        
+        <div class="divider"></div>
+
+        <h3>INSPECTOR</h3>
+        <div id="inspector-panel" class="status-bar inspector-none">
+            HOVER OVER COMPONENT
+        </div>
+
+        <div class="status-bar status-success" style="margin-top: 10px;">
+            🟢 DRC: 0 ERRORS
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="main.js"></script>
+    <!-- Tech Datasheet Modal Overlay -->
+    <div id="tech-modal-overlay" class="modal-hidden">
+        <div class="tech-modal">
+            <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            <div class="modal-header">
+                <span class="modal-badge" id="modal-type">TYPE</span>
+                <h2 id="modal-title">COMPONENT NAME</h2>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-section block-measure">
+                    <h3 class="section-title">WHAT IT MEASURES</h3>
+                    <p id="modal-measure">Retrieving telemetry definition...</p>
+                </div>
+                
+                <div class="modal-section block-principle">
+                    <h3 class="section-title">OPERATING PRINCIPLE</h3>
+                    <p id="modal-principle">Retrieving engineering methodology...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

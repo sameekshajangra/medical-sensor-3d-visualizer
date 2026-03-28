@@ -1,0 +1,386 @@
+:root {
+    --bg-color: #080a0e;
+    --panel-bg: rgba(15, 18, 26, 0.75);
+    --panel-border: rgba(90, 110, 140, 0.3);
+    --text-primary: #e2e8f0;
+    --text-muted: #7f95ac;
+    --accent: #22d3ee;
+    --accent-hover: #67e8f9;
+    --accent-glow: rgba(34, 211, 238, 0.4);
+    --mono-font: 'JetBrains Mono', monospace;
+    --success: #34c759;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    background-image: 
+        linear-gradient(rgba(20, 25, 35, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 25, 35, 0.5) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: var(--text-primary);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+.glass-panel {
+    position: absolute;
+    z-index: 10;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--panel-border);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    animation: fadeSlideIn 0.8s ease-out forwards;
+}
+
+#ui-container {
+    top: 2rem;
+    left: 2rem;
+    width: 320px;
+    transform: translateX(-20px);
+    opacity: 0;
+}
+
+#ui-stats {
+    top: 2rem;
+    right: 2rem;
+    width: 250px;
+    transform: translateX(20px);
+    opacity: 0;
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeSlideIn {
+    to {
+        transform: translate(0);
+        opacity: 1;
+    }
+}
+
+.ui-header h1 {
+    font-family: var(--mono-font);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.mono-text {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+}
+
+.badge {
+    background: rgba(34, 211, 238, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--accent);
+}
+
+.divider {
+    height: 1px;
+    background: var(--panel-border);
+    width: 100%;
+}
+
+h3 {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+/* Controls */
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.controls button {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.controls button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.controls button.active {
+    background: rgba(34, 211, 238, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: inset 0 0 10px var(--accent-glow);
+}
+
+#btn-iso {
+    grid-column: span 2;
+}
+
+/* Toggles */
+.toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.slider {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 34px;
+    transition: 0.3s;
+    margin-right: 0.75rem;
+    border: 1px solid var(--panel-border);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--text-muted);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+    background-color: #fff;
+}
+
+.legend ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    color: var(--text-primary);
+}
+
+.color-box {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+/* Stats Table */
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+}
+
+.stats-table td {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.stat-val {
+    text-align: right;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.status-bar {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.status-success {
+    color: var(--success);
+    background: rgba(52, 199, 89, 0.1);
+    border: 1px solid rgba(52, 199, 89, 0.3);
+    text-shadow: 0 0 5px rgba(52, 199, 89, 0.4);
+}
+
+.inspector-none {
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.inspector-active {
+    color: var(--accent);
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid var(--accent);
+    text-shadow: 0 0 5px var(--accent-glow);
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+/* --- Modal Datasheet --- */
+#tech-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px) contrast(0.85);
+    -webkit-backdrop-filter: blur(12px) contrast(0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: all;
+}
+
+#tech-modal-overlay.modal-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tech-modal {
+    background: rgba(10, 20, 15, 0.85);
+    border: 1px solid var(--hud-border);
+    box-shadow: 0 0 40px rgba(0, 255, 170, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.8);
+    width: 90%;
+    max-width: 600px;
+    padding: 2.5rem;
+    border-radius: 8px;
+    position: relative;
+    transform: translateY(0);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: var(--font-mono);
+}
+
+#tech-modal-overlay.modal-hidden .tech-modal {
+    transform: translateY(30px);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px; right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--hud-text);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+    font-family: var(--font-mono);
+}
+
+.modal-close-btn:hover {
+    color: var(--hud-active);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--hud-border);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-badge {
+    background: rgba(0, 255, 170, 0.1);
+    color: var(--hud-active);
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border: 1px solid var(--hud-active);
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#modal-title {
+    color: #fff;
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+}
+
+.modal-section {
+    margin-bottom: 2rem;
+}
+
+.modal-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    color: var(--hud-active);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+    opacity: 0.9;
+}
+
+#modal-measure, #modal-principle {
+    color: #cbd5e1;
+    line-height: 1.6;
+    font-size: 1.05rem;
+    margin: 0;
+    text-align: justify;
+}
